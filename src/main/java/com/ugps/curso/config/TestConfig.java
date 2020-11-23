@@ -26,13 +26,13 @@ public class TestConfig implements CommandLineRunner{
 	private UserRepository userRepository; //esse é o objeto que acessa os dados 
 
 	@Autowired
-	private OrderRepository orderRepository;
+	private OrderRepository orderRepository; //esse é o objeto que acessa os dados
 	
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryRepository categoryRepository; //esse é o objeto que acessa os dados
 	
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductRepository productRepository; //esse é o objeto que acessa os dados
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -49,6 +49,16 @@ public class TestConfig implements CommandLineRunner{
 		Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
 		
 		categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
+		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
+		
+		//aqui estou associando os produtos com as categorias deles na lista Set
+		p1.getCategories().add(cat2);
+		p2.getCategories().add(cat1);
+		p2.getCategories().add(cat3);
+		p3.getCategories().add(cat3);
+		p4.getCategories().add(cat3);
+		p5.getCategories().add(cat2);
+		
 		productRepository.saveAll(Arrays.asList(p1,p2,p3,p4,p5));
 		
 		User u1 = new User(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
