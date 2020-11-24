@@ -12,7 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_product")
@@ -38,6 +41,11 @@ public class Product implements Serializable{
 	//nós instanciamos o HashSet para que a lista não comece vazia.
 	//Set é uma interface, não pode ser instaciado. Então uso uma classe que implementa essa interface.
 
+	//Estamos usando um Set ao invés de List pois NÃO queremos que tenha REPETIÇÃO de item na listagem.
+	@OneToMany(mappedBy = "id.product")
+	private Set<OrderItem> items = new HashSet<>();
+	
+	
 	//Constructors
 	public Product() {
 	}
@@ -97,6 +105,16 @@ public class Product implements Serializable{
 		return categories;
 	}
 
+	//aqui vou buscar as Orders. Vou varrer cada orderItem e encontrar o Order associado
+	@JsonIgnore
+	public Set<Order> getOrders(){
+		Set<Order> set = new HashSet<>();
+		for(OrderItem x : items) {
+			set.add(x.getOrder());
+		}
+		return set;
+	}
+	
 	
 	//HASHCODE E EQUALS
 	@Override
