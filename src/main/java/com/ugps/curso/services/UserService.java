@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ugps.curso.entities.User;
 import com.ugps.curso.repositories.UserRepository;
+import com.ugps.curso.services.exceptions.ResourceNotFoundException;
 
 //registramos a classe como Component para que ela seja um componente do Spring e assim seja injetado automaticamente com autowired
 @Service
@@ -25,7 +26,7 @@ public class UserService {
 	//aqui vamos usar o recurso do objeto Optional. O comando get pega o objeto do tipo que está entre <>
 	public User findById(Long id) {
 		Optional<User> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
